@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上升到面向对象案例1</title>
+</head>
+
+<body>
+   <h5>上升到面向对象案例1:实现几组图片的切换</h5>
+
+
+    <script>
+        // 调用
+        function Imgclick() {
+            // 当前this为实例的this
+
+            // 生成图片信号量
+            this.idx = 0;
+            // 调用初始化函数
+            this.init();
+            // 调动监听
+            this.monitoring();
+        }
+
+        // 初始化函数
+        Imgclick.prototype.init = function () {
+            // 生成div
+            this.box = document.createElement('div');
+            // 给div添加类名
+            this.box.className = 'box';
+
+            // box里面的内容
+            this.box.innerHTML = `
+                <button disabled>上一张</button>
+                <img src="images/0.png">
+                <button>下一张</button>
+            `;
+
+            // 添加
+            document.body.appendChild(this.box);
+
+            // 得到元素
+            this.btn1 = this.box.getElementsByTagName('button')[0];
+            this.btn2 = this.box.getElementsByTagName('button')[1];
+            this.img = this.box.getElementsByTagName('img')[0];
+        }
+
+        // 监听
+        Imgclick.prototype.monitoring = function () {
+            // 备份
+            var self = this;
+            // 点击 自己的减号，注意添加监听是给自己的减号添加监听
+            this.btn1.onclick = function () {
+                // 信号量变化
+                self.idx--;
+                // 图片变化
+                self.img.src = 'images/' + self.idx + '.png';
+                // btn2点击键变化
+                self.btn2.disabled = false;
+                if (self.idx == 0) {
+                    self.btn1.disabled = true;
+                }
+            }
+
+            this.btn2.onclick = function () {
+                self.idx++;
+                self.img.src = 'images/' + self.idx + '.png';
+                self.btn1.disabled = false;
+                if (self.idx == 2) {
+                    self.btn2.disabled = true;
+                }
+            }
+        }
+
+        new Imgclick();
+        new Imgclick();
+        new Imgclick();
+    </script>
+</body>
+
+</html>
